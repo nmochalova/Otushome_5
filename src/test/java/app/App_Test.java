@@ -6,18 +6,20 @@ import extensions.AppiumExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
+import pages.MainPage;
 import pages.UsersPage;
 
 import static com.codeborne.selenide.Selenide.$;
 
 @ExtendWith(AppiumExtension.class)
 public class App_Test {
+  private MainPage mainPage = new MainPage();
   private UsersPage usersPage = new UsersPage();
 
   //Тест, который проверяет, что на странице Posts загружено 100 комментариев
   @Test
   public void check_posts_test() {
-    usersPage.open();
+    mainPage.open();
 
     $(By.className("android.widget.ScrollView")).shouldBe(Condition.visible);
     $("[content-desc *= 'Tab 2 of 2']").click();
@@ -41,9 +43,9 @@ public class App_Test {
   //Тест, который кликает по пользователю с заданным ID и проверяет, что отобразилась информация именно по этому пользователю
   @Test
   public void check_user_by_id_test() {
-    usersPage.open();
-    //ждем пока содержимое страницы загрузится
-    $(By.className("android.widget.ScrollView")).shouldBe(Condition.visible);
+    mainPage.open();
+    //ждем пока содержимое страницы Users загрузится
+    usersPage.checkLoadPage();
     //Из данных JSON берем имя, соответствующего заданному ID_USER
     //...
     String username = "Bret";
@@ -71,7 +73,7 @@ public class App_Test {
   //Тест, который кликает по комментарию с заданным ID и проверяет, что отобразилась информация именно по этому комментарию
   @Test
   public void check_post_by_id_test() {
-    usersPage.open();
+    mainPage.open();
 
     $(By.className("android.widget.ScrollView")).shouldBe(Condition.visible);
     $("[content-desc *= 'Tab 2 of 2']").click();
