@@ -1,4 +1,4 @@
 package pages;
 
-public class PostPage extends BasePage<PostPage>{
+public class PostPage extends MainPage{
 }

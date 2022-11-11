@@ -5,6 +5,6 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class UserPage extends BasePage<UserPage>{
+public class UserPage extends MainPage{
 
 }

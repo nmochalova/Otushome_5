@@ -12,9 +12,9 @@ import pages.UsersPage;
 import static com.codeborne.selenide.Selenide.$;
 
 @ExtendWith(AppiumExtension.class)
-public class App_Test {
-  private MainPage mainPage = new MainPage();
+public class App_test {
   private UsersPage usersPage = new UsersPage();
+  private MainPage mainPage = new MainPage();
 
   //Тест, который проверяет, что на странице Posts загружено 100 комментариев
   @Test
@@ -38,6 +38,7 @@ public class App_Test {
 
 
  //   $("[content-desc *= 'post id: 1']").click();
+
   }
 
   //Тест, который кликает по пользователю с заданным ID и проверяет, что отобразилась информация именно по этому пользователю
