@@ -1,7 +1,0 @@
-org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started
-Build info: version: '4.6.0', revision: '79f1c02ae20'
-System info: os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_322'
-Driver info: io.appium.java_client.android.AndroidDriver
-Command: [d6a668e5-5e0e-4a0e-9b7b-d7e29f4b4c75, getPageSource {}]
-Capabilities {appium:app: C:\Work\Git\Otushome_5\buil..., appium:appPackage: ru.otus.qa.java.pro.java_qa..., appium:automationName: UIAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Work\Git\Otushome_5\buil..., automationName: UIAutomator2, deviceName: otus, platformName: android, platformVersion: 5.1}, appium:deviceApiLevel: 22, appium:deviceManufacturer: unknown, appium:deviceModel: Android SDK built for x86, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 120, appium:deviceScreenSize: 200x300, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:pixelRatio: 0.75, appium:platformVersion: 5.1.1, appium:statBarHeight: 19, appium:takesScreenshot: true, appium:viewportRect: {height: 245, left: 0, top: 19, width: 200}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
-Session ID: d6a668e5-5e0e-4a0e-9b7b-d7e29f4b4c75
