@@ -9,8 +9,6 @@ public class MainPage extends BasePage<MainPage>{
     return this;
   }
 
-  public void close() {
-    Selenide.closeWebDriver();
-  }
+
 
 }

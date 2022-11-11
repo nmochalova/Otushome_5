@@ -7,14 +7,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import pages.MainPage;
+import pages.UserPage;
 import pages.UsersPage;
 
 import static com.codeborne.selenide.Selenide.$;
 
 @ExtendWith(AppiumExtension.class)
 public class App_test {
-  private UsersPage usersPage = new UsersPage();
   private MainPage mainPage = new MainPage();
+  private UsersPage usersPage = new UsersPage();
+  private UserPage userPage = new UserPage();
 
   //Тест, который проверяет, что на странице Posts загружено 100 комментариев
   @Test
@@ -36,37 +38,28 @@ public class App_test {
 //      System.out.println(posts.first().getAttribute("content-desc"));
 //    }
 
-
  //   $("[content-desc *= 'post id: 1']").click();
-
   }
 
   //Тест, который кликает по пользователю с заданным ID и проверяет, что отобразилась информация именно по этому пользователю
   @Test
   public void check_user_by_id_test() {
     mainPage.open();
-    //ждем пока содержимое страницы Users загрузится
     usersPage.checkLoadPage();
-    //Из данных JSON берем имя, соответствующего заданному ID_USER
+    //Из данных JSON берем данные пользователя
     //...
     String username = "Bret";
     String name = "Leanne Graham";
-    //составляем локатор по имени
-    String locatorUsername = String.format("[content-desc ^= '%s']",username);
-    String locatorName = String.format("[content-desc ^= 'User %s']",name);
+
     //ищем локатор на экране, если не находим делаем свайп пока не найдем
     //..
     //если не нашли и конец страницы, то ошибка: данные по пользователю не найдены
     //..
     //если нашли - кликаем по пользователю
-    SelenideElement el_1 = $(locatorUsername);
-    el_1.click();
-    //Проверяем, что открылись данные по пользователю name
-    $(locatorName).shouldBe(Condition.visible);
-
+    usersPage.clickUser(username);
+    userPage.checkUser(name);
     //Проверяем, что все данные пользователя отобразились правильно
-    SelenideElement el_2 = $(locatorUsername);
-    String result = el_2.getAttribute("content-desc");
+    String result = userPage.getUserInfo(username);
     System.out.println(result);
     //..
   }
