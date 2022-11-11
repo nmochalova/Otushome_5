@@ -9,6 +9,9 @@ import org.openqa.selenium.By;
 import pages.MainPage;
 import pages.UserPage;
 import pages.UsersPage;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -46,10 +49,10 @@ public class App_test {
   public void check_user_by_id_test() {
     mainPage.open();
     usersPage.checkLoadPage();
-    //Из данных JSON берем данные пользователя
-    //...
-    String username = "Bret";
-    String name = "Leanne Graham";
+
+    Map<String,String> user = usersPage.getUserInfoFromJson(1);
+    String name = user.get("name");
+    String username = user.get("username");
 
     //ищем локатор на экране, если не находим делаем свайп пока не найдем
     //..
@@ -62,6 +65,8 @@ public class App_test {
     String result = userPage.getUserInfo(username);
     System.out.println(result);
     //..
+    assertThat(result.contains(name));
+    assertThat(result.contains(username));
   }
 
   //Тест, который кликает по комментарию с заданным ID и проверяет, что отобразилась информация именно по этому комментарию
