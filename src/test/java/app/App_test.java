@@ -1,7 +1,7 @@
 package app;
 
+import asserts.AssertUser;
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.SelenideElement;
 import extensions.AppiumExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +14,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.$;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(AppiumExtension.class)
 public class App_test {
@@ -50,7 +51,7 @@ public class App_test {
     mainPage.open();
     usersPage.checkLoadPage();
 
-    Map<String,String> user = usersPage.getUserInfoFromJson(1);
+    Map<String,String> user = usersPage.getUserInfoFromJson("2");
     String name = user.get("name");
     String username = user.get("username");
 
@@ -63,10 +64,7 @@ public class App_test {
     userPage.checkUser(name);
     //Проверяем, что все данные пользователя отобразились правильно
     String result = userPage.getUserInfo(username);
-    System.out.println(result);
-    //..
-    assertThat(result.contains(name));
-    assertThat(result.contains(username));
+    AssertUser.asserDataUser(result, user);
   }
 
   //Тест, который кликает по комментарию с заданным ID и проверяет, что отобразилась информация именно по этому комментарию

@@ -24,9 +24,9 @@ public class UsersPage extends BasePage<UsersPage>{
   }
 
   //Из данных JSON берем данные пользователя
-  public Map<String,String> getUserInfoFromJson(int id){
+  public Map<String,String> getUserInfoFromJson(String id){
     UserApi userApi = new UserApi();
-    Response response = userApi.getUser("1");
+    Response response = userApi.getUser(id);
     assertTrue(response.statusCode()==200);
 
     Map<String,String> user = new HashMap<>();
@@ -36,6 +36,10 @@ public class UsersPage extends BasePage<UsersPage>{
     user.put("email",userApi.getValueFromJson(response,"email"));
     user.put("phone",userApi.getValueFromJson(response,"phone"));
     user.put("website",userApi.getValueFromJson(response,"website"));
+    user.put("street",userApi.getValueFromJson(response,"address","street"));
+    user.put("suite",userApi.getValueFromJson(response,"address","suite"));
+    user.put("zipcode",userApi.getValueFromJson(response,"address","zipcode"));
+    user.put("city",userApi.getValueFromJson(response,"address","city"));
 
     return user;
   }

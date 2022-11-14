@@ -72,4 +72,8 @@ public class UserApi {
     return response.jsonPath().getString(name);
   }
 
+  public String getValueFromJson(Response response, String path, String name) {
+    return response.jsonPath().getString(path+"."+name);
+  }
+
 }
