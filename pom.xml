@@ -22,6 +22,7 @@
 
         <browser>chrome</browser>
         <webdriver.base.url/>
+        <userid>1</userid>
         <test.project.language>RU</test.project.language>
 
         <webdriver.timeouts.implicitlywait>5000</webdriver.timeouts.implicitlywait>
@@ -106,6 +107,7 @@
                     <systemPropertyVariables>
                         <app.name>ApiDemos-debug.apk</app.name>>
                         <browser>${browser}</browser>
+                        <userid>${userid}</userid>
                         <webdriver.timeouts.implicitlywait>${webdriver.timeouts.implicitlywait}
                         </webdriver.timeouts.implicitlywait>
                         <webdriver.base.url>${webdriver.base.url}</webdriver.base.url>

@@ -51,7 +51,8 @@ public class App_test {
     mainPage.open();
     usersPage.checkLoadPage();
 
-    Map<String,String> user = usersPage.getUserInfoFromJson("2");
+    String userId = System.getProperty("userid","1");
+    Map<String,String> user = usersPage.getUserInfoFromJson(userId);
     String name = user.get("name");
     String username = user.get("username");
 
@@ -64,6 +65,7 @@ public class App_test {
     userPage.checkUser(name);
     //Проверяем, что все данные пользователя отобразились правильно
     String result = userPage.getUserInfo(username);
+    System.out.println(result);
     AssertUser.asserDataUser(result, user);
   }
 
