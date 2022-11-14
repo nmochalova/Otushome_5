@@ -3,6 +3,7 @@ package pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
@@ -39,6 +40,9 @@ public class UserPage extends MainPage{
   }
 
   private boolean swapeScreen() {
+     // $(By.className("android.widget.ScrollView")).scrollIntoView("{block: \"end\"}");
+    String locatorName = String.format("[content-desc ^= 'User %s']","Samantha");
+    $(locatorName).scrollTo();
     return true;
   }
 }
