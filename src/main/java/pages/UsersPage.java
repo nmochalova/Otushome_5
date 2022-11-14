@@ -1,6 +1,8 @@
 package pages;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
+import exseptions.UserNotFound;
 import io.restassured.response.Response;
 import org.openqa.selenium.By;
 import services.UserApi;
@@ -17,10 +19,19 @@ public class UsersPage extends BasePage<UsersPage>{
     $(By.className("android.widget.ScrollView")).shouldBe(Condition.visible);
   }
 
-  //Кликаем по пользователю по заданному username
-  public void clickUser(String username) {
-    String locatorUsername = String.format("[content-desc ^= '%s']",username);
-    $(locatorUsername).click();
+  //Кликаем по пользователю
+  public void clickUser(SelenideElement user, String userId) {
+    try {
+
+      user.click(); //<--
+
+    } catch (NullPointerException e) {
+      try {
+        throw new UserNotFound(userId);
+      } catch (UserNotFound ex) {
+        ex.printStackTrace();
+      }
+    }
   }
 
   //Из данных JSON берем данные пользователя

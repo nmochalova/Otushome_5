@@ -2,6 +2,7 @@ package app;
 
 import asserts.AssertUser;
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import extensions.AppiumExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,12 +10,9 @@ import org.openqa.selenium.By;
 import pages.MainPage;
 import pages.UserPage;
 import pages.UsersPage;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.util.Map;
-
 import static com.codeborne.selenide.Selenide.$;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(AppiumExtension.class)
 public class App_test {
@@ -57,11 +55,10 @@ public class App_test {
     String username = user.get("username");
 
     //ищем локатор на экране, если не находим делаем свайп пока не найдем
-    //..
-    //если не нашли и конец страницы, то ошибка: данные по пользователю не найдены
-    //..
+    SelenideElement userElement = userPage.findUser(username);
+
     //если нашли - кликаем по пользователю
-    usersPage.clickUser(username);
+    usersPage.clickUser(userElement,userId);
     userPage.checkUser(name);
     //Проверяем, что все данные пользователя отобразились правильно
     String result = userPage.getUserInfo(username);
