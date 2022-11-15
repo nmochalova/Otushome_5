@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.interactions.Actions;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
@@ -40,9 +41,10 @@ public class UserPage extends MainPage{
   }
 
   private boolean swapeScreen() {
-     // $(By.className("android.widget.ScrollView")).scrollIntoView("{block: \"end\"}");
-    String locatorName = String.format("[content-desc ^= 'User %s']","Samantha");
-    $(locatorName).scrollTo();
+     // $("").scroll% использует JavaScript и для мобильных приложений не поддерживается
+    //String locatorName = String.format("[content-desc ^= '%s']","Samantha");
+    //$(locatorName).scrollTo(); //Method is not implemented
+
     return true;
   }
 }

@@ -8,7 +8,8 @@ import providers.SelenideWebDriver;
 public class AppiumExtension implements BeforeAllCallback {
 
   @Override
-  public void beforeAll(ExtensionContext extensionContext) throws Exception {
+  public void beforeAll(ExtensionContext extensionContext) {
+    Configuration.screenshots = false;
     Configuration.browserSize = null;
     Configuration.browser = SelenideWebDriver.class.getName();
   }

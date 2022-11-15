@@ -15,8 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UsersPage extends BasePage<UsersPage>{
   //ждем пока содержимое страницы Users загрузится
-  public void checkLoadPage(){
-    $(By.className("android.widget.ScrollView")).shouldBe(Condition.visible);
+  public void check(){
+   // $(By.className("android.widget.ScrollView")).shouldBe(Condition.visible);
+    $(By.xpath("//android.widget.ScrollView/android.view.View")).shouldBe(Condition.visible);
   }
 
   //Кликаем по пользователю
