@@ -20,4 +20,12 @@ public class AssertUser {
       assertTrue(result.contains(user.get("zipcode")));
     });
   }
+
+  public static void asserDataPost(String result, Map<String, String> post) {
+    Assertions.assertAll(() -> {
+      assertTrue(result.contains(post.get("id")));
+      assertTrue(result.contains(post.get("title")));
+      assertTrue(result.contains(post.get("body")));
+    });
+  }
 }

@@ -1,39 +1,17 @@
 package pages;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import exseptions.UserNotFound;
 import io.restassured.response.Response;
-import org.openqa.selenium.By;
 import services.UserApi;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.codeborne.selenide.Selenide.$;
-
-public class UsersPage extends BasePage<UsersPage>{
-  //ждем пока содержимое страницы Users загрузится
-  public void check(){
-    $(By.xpath("//android.widget.ScrollView/android.view.View")).shouldBe(Condition.visible);
-  }
-
-  //Кликаем по пользователю
+public class UsersPage extends MainPage{
   public void clickUser(SelenideElement user, String userId) {
-    try {
-
-      user.click(); //<--
-
-    } catch (NullPointerException e) {
-      try {
-        throw new UserNotFound(userId);
-      } catch (UserNotFound ex) {
-        ex.printStackTrace();
-      }
-    }
+      user.click();
   }
 
-  //Из данных JSON берем данные пользователя
   public Map<String,String> getUserInfoFromJson(String id){
     UserApi userApi = new UserApi();
     Response response = userApi.getUser(id);
