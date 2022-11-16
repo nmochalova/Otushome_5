@@ -26,25 +26,8 @@ public class UserPage extends MainPage{
 
   public SelenideElement findUser(String username){
     String locatorUsername = String.format("[content-desc ^= '%s']",username);
-    boolean endOfScreen = false;
-
-    while (!endOfScreen) {
-      ElementsCollection user = $$(locatorUsername);
-      if (user.size() == 1) { //если нашли хотя бы один элемент, то возвращаем его
-        return user.get(0);
-      } else {  //иначе продолжаем скроллить экран
-        endOfScreen = swapeScreen();
-      }
-    }
-
-    return null; //если ничего не нашли возвращаем null
+    SelenideElement element = $(locatorUsername).should(Condition.visible);
+    return element;
   }
 
-  private boolean swapeScreen() {
-     // $("").scroll% использует JavaScript и для мобильных приложений не поддерживается
-    //String locatorName = String.format("[content-desc ^= '%s']","Samantha");
-    //$(locatorName).scrollTo(); //Method is not implemented
-
-    return true;
-  }
 }

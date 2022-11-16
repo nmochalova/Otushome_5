@@ -11,12 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.$;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UsersPage extends BasePage<UsersPage>{
   //ждем пока содержимое страницы Users загрузится
   public void check(){
-   // $(By.className("android.widget.ScrollView")).shouldBe(Condition.visible);
     $(By.xpath("//android.widget.ScrollView/android.view.View")).shouldBe(Condition.visible);
   }
 
@@ -39,7 +37,6 @@ public class UsersPage extends BasePage<UsersPage>{
   public Map<String,String> getUserInfoFromJson(String id){
     UserApi userApi = new UserApi();
     Response response = userApi.getUser(id);
-    assertTrue(response.statusCode()==200);
 
     Map<String,String> user = new HashMap<>();
     user.put("id",userApi.getValueFromJson(response,"id"));
