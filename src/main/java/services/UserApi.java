@@ -11,7 +11,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasKey;
 
 public class UserApi {
-  private String baseUrl = "https://jsonplaceholder.typicode.com";
+  private String baseUrl = System.getProperty("base.url","https://jsonplaceholder.typicode.com");
   private String userId = "/users/{id}";
   private String postId = "/posts/{id}";
   private String listPosts = "/posts/}";

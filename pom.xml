@@ -20,7 +20,8 @@
         <useUnlimitedThreads>true</useUnlimitedThreads>
         <thread.count>32</thread.count>
 
-        <browser>chrome</browser>
+        <base.url>https://jsonplaceholder.typicode.com</base.url>
+        <appium.url>http://127.0.0.1:4723/wd/hub</appium.url>
         <webdriver.base.url/>
         <userid>1</userid>
         <test.project.language>RU</test.project.language>
@@ -79,7 +80,6 @@
 
                     <systemPropertyVariables>
                         <app.name>ApiDemos-debug.apk</app.name>>
-                        <browser>${browser}</browser>
                         <userid>${userid}</userid>
                         <webdriver.timeouts.implicitlywait>${webdriver.timeouts.implicitlywait}
                         </webdriver.timeouts.implicitlywait>
