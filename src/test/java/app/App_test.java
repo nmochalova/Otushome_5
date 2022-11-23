@@ -6,6 +6,7 @@ import extensions.AppiumExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import pages.*;
+import stubs.PingStub;
 
 import java.util.Map;
 
@@ -13,6 +14,9 @@ import java.util.Map;
 
 @ExtendWith(AppiumExtension.class)
 public class App_test {
+//  {
+//    new PingStub();
+//  }
   private MainPage mainPage = new MainPage();
   private UsersPage usersPage = new UsersPage();
   private UserPage userPage = new UserPage();
