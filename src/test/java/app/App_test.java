@@ -1,11 +1,17 @@
 package app;
 
 import asserts.AssertUser;
+import com.codeborne.selenide.Driver;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import extensions.AppiumExtension;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import pages.*;
@@ -14,6 +20,8 @@ import java.time.Duration;
 import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.$;
+import static java.time.Duration.ofMillis;
+import static java.util.Collections.singletonList;
 
 //clean test -DforkСount=0 -Dtest=App_test
 
@@ -29,28 +37,31 @@ public class App_test {
   public void scrollTest(){
     mainPage.open();
 
-    String userId = "3";
+    for (int i = 1; i < 4; i++) {
 
-    Map<String,String> user = usersPage.getUserInfoFromJson(userId);
-    String name = user.get("name");
-    String username = user.get("username");
+      String userId = String.valueOf(i);
+      Map<String, String> user = usersPage.getUserInfoFromJson(userId);
+      String username = user.get("username");
+      Point source = userPage.findUser(username).getLocation();
+      System.out.println("x = " + source.x + ", y = " + source.y);
 
-    SelenideElement userElement = userPage.findUser(username);
+      PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+      Sequence sequence = new Sequence(finger, 1);
 
+      //Движение указателя к позиции User_i
+      sequence.addAction(finger.createPointerMove(ofMillis(0),
+              PointerInput.Origin.viewport(), source.x, source.y)); //x1,y1
+      //Движение указателя вниз.
+      sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+      //Удержание указателя на некоторое время (в миллисекундах).
+      sequence.addAction(new Pause(finger, ofMillis(600)));
+      //Движение указателя со слайдером к конечной локации.
+      sequence.addAction(finger.createPointerMove(ofMillis(600),
+              PointerInput.Origin.viewport(), source.x, source.y + 80)); //x1,y2
+      //“Отрыв” указателя от слайдера.
+      sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
-    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
-    Sequence longpress = new Sequence(finger, 1);
-    longpress.addAction(
-            finger.createPointerMove(Duration.ofMillis(0),
-                    PointerInput.Origin.viewport(),
-                    userElement.getLocation().x,
-                    userElement.getLocation().y)
-                //    $("[content-desc *= 'Tab 2 of 2']").getLocation().x,
-                //    $("[content-desc *= 'Tab 2 of 2']").getLocation().y)
-    );
-    for (int i = 0; i < 3; i++) {
-      Selenide.sleep(5000);
-      System.out.println("sleep.."+i);
+    //  driver.perform(singletonList(sequence));
     }
   }
 
