@@ -14,9 +14,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import pages.*;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -37,7 +39,7 @@ public class App_test {
   public void scrollTest(){
     mainPage.open();
 
-    for (int i = 1; i < 4; i++) {
+    for (int i = 1; i < 11; i++) {
 
       String userId = String.valueOf(i);
       Map<String, String> user = usersPage.getUserInfoFromJson(userId);
@@ -57,11 +59,12 @@ public class App_test {
       sequence.addAction(new Pause(finger, ofMillis(600)));
       //Движение указателя со слайдером к конечной локации.
       sequence.addAction(finger.createPointerMove(ofMillis(600),
-              PointerInput.Origin.viewport(), source.x, source.y + 80)); //x1,y2
+              PointerInput.Origin.viewport(), source.x, source.y - 80)); //x1,y2
       //“Отрыв” указателя от слайдера.
       sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
-    //  driver.perform(singletonList(sequence));
+      RemoteWebDriver driver = (RemoteWebDriver) Selenide.webdriver().object();
+      driver.perform(Arrays.asList(sequence));
     }
   }
 
