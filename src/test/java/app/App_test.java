@@ -6,7 +6,9 @@ import com.codeborne.selenide.ex.ElementNotFound;
 import extensions.AppiumExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.NoSuchElementException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import pages.*;
 import java.util.Map;
 
@@ -58,28 +60,26 @@ public class App_test {
   public void scrollTest(){
     mainPage.open();
     postPage.clickToPostsPage();
-    int postsPixels = 152;
-    String postId;
-    boolean isFound;
+    int postsPixels = 120;
+    int deltasPix = 50;
     int millsPause = 300;
+    int i=1;
+    boolean isFlag = true;
 
-    for (int i = 1; i <= countPost; i++) {
-      isFound = false;
-      while (!isFound) {
-        try {
-          postId = String.valueOf(i);
-          System.out.println(postId);
-          SelenideElement element = postPage.findPost(postId);
-          mainPage.scrollPage(element, postsPixels, millsPause);
-          isFound = true;
-        } catch (ElementNotFound e) {
-          postId = String.valueOf(i + 1);
-          System.out.println("-50 pxl => " + postId);
-          SelenideElement element = postPage.findPost(postId);
-          mainPage.scrollPage(element, (-50), millsPause);
-        }
+//    for (int j = 1; j <= countPost; j++) {
+//      postPage.scrollUntilFoundPost(j, postsPixels, deltasPix, millsPause);
+//    }
+
+    while (isFlag) {
+      try {
+        postPage.scrollUntilFoundPost(i, postsPixels, deltasPix, millsPause);
+        i++;
+      } catch (ElementNotFound e) {
+        isFlag = false;
       }
     }
+
+    assertEquals(countPost,i);
   }
 
   //Тест, который кликает по комментарию с заданным ID и проверяет, что отобразилась информация именно по этому комментарию

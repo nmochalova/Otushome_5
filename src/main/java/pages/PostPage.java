@@ -3,10 +3,12 @@ package pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
+import org.openqa.selenium.Point;
 
 import static com.codeborne.selenide.Selenide.$;
 
 public class PostPage extends MainPage{
+  private  int postid1, postid2, y1, y2;
 
   public void clickToPostsPage() {
     $("[content-desc *= 'Tab 2 of 2']").click();
@@ -36,6 +38,7 @@ public class PostPage extends MainPage{
 
   public void scrollUntilFoundPost(int postId, int postsPixels, int deltaPix, int millsPause) {
     boolean isFound = false;
+
     while (!isFound) {
       try {
         System.out.println(postId);
@@ -43,10 +46,17 @@ public class PostPage extends MainPage{
         this.scrollPage(element, postsPixels, millsPause);
         isFound = true;
       } catch (ElementNotFound e) {
-        System.out.println("-50 pxl => " + (postId+1));
-        SelenideElement element = this.findPost(String.valueOf(postId+1));
-        this.scrollPage(element, (-deltaPix), millsPause);
+        try {
+          System.out.println("-50 pxl => " + (postId+1));
+          SelenideElement element = this.findPost(String.valueOf(postId+1));
+          this.scrollPage(element, (-deltaPix), millsPause);
+        } catch (ElementNotFound ex) {
+          System.out.println("+50 pxl => " + (postId-1));
+          SelenideElement element = this.findPost(String.valueOf(postId-1));
+          this.scrollPage(element, deltaPix, millsPause);
+        }
       }
     }
   }
+
 }
