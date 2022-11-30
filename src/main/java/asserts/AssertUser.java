@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AssertUser {
 
   public static void asserDataUser(String result, Map<String,String> user) {
+    System.out.println(result);
     Assertions.assertAll(() -> {
       assertTrue(result.contains(user.get("name")));
       assertTrue(result.contains(user.get("username")));

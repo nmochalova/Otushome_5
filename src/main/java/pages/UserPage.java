@@ -2,6 +2,10 @@ package pages;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.ex.ElementNotFound;
+
+import java.util.Map;
+
 import static com.codeborne.selenide.Selenide.$;
 
 public class UserPage extends MainPage{
@@ -20,8 +24,16 @@ public class UserPage extends MainPage{
 
   public SelenideElement findUser(String username){
     String locatorUsername = String.format("[content-desc ^= '%s']",username);
-    SelenideElement element = $(locatorUsername).should(Condition.visible);
+
+    SelenideElement element = null;
+    try {
+      element = $(locatorUsername).should(Condition.visible);
+    } catch (ElementNotFound e) {
+      throw e;
+    }
+
     return element;
   }
+
 
 }

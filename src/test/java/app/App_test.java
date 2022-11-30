@@ -1,32 +1,15 @@
 package app;
 
 import asserts.AssertUser;
-import com.codeborne.selenide.Driver;
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.ex.ElementNotFound;
 import extensions.AppiumExtension;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.android.AndroidDriver;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.Pause;
-import org.openqa.selenium.interactions.PointerInput;
-import org.openqa.selenium.interactions.Sequence;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import pages.*;
-
-import java.time.Duration;
-import java.util.Arrays;
 import java.util.Map;
 
-import static com.codeborne.selenide.Selenide.$;
-import static java.time.Duration.ofMillis;
-import static java.util.Collections.singletonList;
-
 //clean test -DforkСount=0 -Dtest=App_test
-
 @ExtendWith(AppiumExtension.class)
 public class App_test {
   private MainPage mainPage = new MainPage();
@@ -34,6 +17,7 @@ public class App_test {
   private UserPage userPage = new UserPage();
   private PostPage postPage = new PostPage();
   private PostsPage postsPage = new PostsPage();
+  private final int countUser = 10;
 
   @Test
   public void scrollTest(){
@@ -44,49 +28,38 @@ public class App_test {
       String userId = String.valueOf(i);
       Map<String, String> user = usersPage.getUserInfoFromJson(userId);
       String username = user.get("username");
-      Point source = userPage.findUser(username).getLocation();
-      System.out.println("x = " + source.x + ", y = " + source.y);
+      SelenideElement element = userPage.findUser(username);
 
-      PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
-      Sequence sequence = new Sequence(finger, 1);
-
-      //Движение указателя к позиции User_i
-      sequence.addAction(finger.createPointerMove(ofMillis(0),
-              PointerInput.Origin.viewport(), source.x, source.y)); //x1,y1
-      //Движение указателя вниз.
-      sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
-      //Удержание указателя на некоторое время (в миллисекундах).
-      sequence.addAction(new Pause(finger, ofMillis(600)));
-      //Движение указателя со слайдером к конечной локации.
-      sequence.addAction(finger.createPointerMove(ofMillis(600),
-              PointerInput.Origin.viewport(), source.x, source.y - 80)); //x1,y2
-      //“Отрыв” указателя от слайдера.
-      sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
-
-      RemoteWebDriver driver = (RemoteWebDriver) Selenide.webdriver().object();
-      driver.perform(Arrays.asList(sequence));
+      mainPage.scrollPage(element,82,600);
     }
   }
 
-  //Тест, который кликает по пользователю с заданным ID = (1,2,3) и проверяет, что отобразилась информация именно по этому пользователю
+  //Тест, который кликает по пользователю с заданным ID ( <= 10) и проверяет, что отобразилась информация именно по этому пользователю
   @Test
   public void checkUserByIdTest() {
     mainPage.open();
 
     String userId = System.getProperty("userid","1");
-    if (Integer.parseInt(userId) > 3)  userId = "1";
+    if ((Integer.parseInt(userId) > countUser) || (Integer.parseInt(userId) <= 0))  userId = "1";
 
     Map<String,String> user = usersPage.getUserInfoFromJson(userId);
-    String name = user.get("name");
-    String username = user.get("username");
+    String targetUsername = user.get("username");
+    String targetName = user.get("name");
 
-    SelenideElement userElement = userPage.findUser(username);
-    usersPage.clickUser(userElement,userId);
-    userPage.checkUser(name);
-
+    for (int i = 1; i <= countUser; i++) {
+      try { //ищем целевого пользователя на странице
+        SelenideElement userElement = userPage.findUser(targetUsername);
+        usersPage.clickUser(userElement, userId);
+        userPage.checkUser(targetName);
+        break;
+      } catch (ElementNotFound e) { //если не нашли прокручиваем страницу
+        String otherUserName = usersPage.getUserUsernameById(String.valueOf(i));
+        SelenideElement userElement = userPage.findUser(otherUserName);
+        mainPage.scrollPage(userElement,80,600);
+      }
+    }
     //Проверяем, что все данные пользователя отобразились правильно
-    String result = userPage.getUserInfo(username);
-    System.out.println(result);
+    String result = userPage.getUserInfo(targetUsername);
     AssertUser.asserDataUser(result, user);
   }
 

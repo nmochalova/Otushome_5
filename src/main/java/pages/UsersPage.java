@@ -31,4 +31,9 @@ public class UsersPage extends MainPage{
     return user;
   }
 
+  public String getUserUsernameById(String userId) {
+    Map<String,String> user = getUserInfoFromJson(userId);
+    return user.get("username");
+  }
+
 }
