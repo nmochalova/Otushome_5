@@ -2,6 +2,7 @@ package pages;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.ex.ElementNotFound;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -12,7 +13,7 @@ public class PostPage extends MainPage{
     this.check();
   }
 
-  public SelenideElement findUser(String postid) {
+  public SelenideElement findPost(String postid) {
     String locator = String.format("[content-desc *= 'post id: %s']",postid);
     SelenideElement element = $(locator).should(Condition.visible);
     return element;
@@ -31,5 +32,21 @@ public class PostPage extends MainPage{
     String locatorUsername = String.format("[content-desc *= 'user id: %s']",postid);
     SelenideElement el_2 = $(locatorUsername).should(Condition.visible);
     return el_2.getAttribute("content-desc");
+  }
+
+  public void scrollUntilFoundPost(int postId, int postsPixels, int deltaPix, int millsPause) {
+    boolean isFound = false;
+    while (!isFound) {
+      try {
+        System.out.println(postId);
+        SelenideElement element = this.findPost(String.valueOf(postId));
+        this.scrollPage(element, postsPixels, millsPause);
+        isFound = true;
+      } catch (ElementNotFound e) {
+        System.out.println("-50 pxl => " + (postId+1));
+        SelenideElement element = this.findPost(String.valueOf(postId+1));
+        this.scrollPage(element, (-deltaPix), millsPause);
+      }
+    }
   }
 }

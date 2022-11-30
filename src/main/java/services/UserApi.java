@@ -40,12 +40,12 @@ public class UserApi {
   public Response getPost(String id) {
     Response response = RestAssured
             .given(reqSpec)
-            .log().all()
+  //          .log().all()
             .when()
             .get(postId,id)
             .andReturn();
 
-    response.prettyPrint();
+ //   response.prettyPrint();
 
     return response;
   }
