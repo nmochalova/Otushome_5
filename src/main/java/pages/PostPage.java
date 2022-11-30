@@ -38,8 +38,10 @@ public class PostPage extends MainPage{
 
   public void scrollUntilFoundPost(int postId, int postsPixels, int deltaPix, int millsPause) {
     boolean isFound = false;
+    int counter = 0;
 
-    while (!isFound) {
+    while ((!isFound) && (counter < 2)) {
+      counter++;
       try {
         System.out.println(postId);
         SelenideElement element = this.findPost(String.valueOf(postId));
@@ -57,6 +59,9 @@ public class PostPage extends MainPage{
         }
       }
     }
+
+    if (!isFound)
+      throw new RuntimeException("Scroll is finish");
   }
 
 }

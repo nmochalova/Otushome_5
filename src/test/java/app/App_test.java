@@ -63,23 +63,20 @@ public class App_test {
     int postsPixels = 120;
     int deltasPix = 50;
     int millsPause = 300;
-    int i=1;
+    int i=0;
     boolean isFlag = true;
 
-//    for (int j = 1; j <= countPost; j++) {
-//      postPage.scrollUntilFoundPost(j, postsPixels, deltasPix, millsPause);
-//    }
 
     while (isFlag) {
       try {
-        postPage.scrollUntilFoundPost(i, postsPixels, deltasPix, millsPause);
         i++;
-      } catch (ElementNotFound e) {
+        postPage.scrollUntilFoundPost(i, postsPixels, deltasPix, millsPause);
+      } catch (RuntimeException e) {
         isFlag = false;
       }
     }
 
-    assertEquals(countPost,i);
+    assertEquals(countPost,i-1);
   }
 
   //Тест, который кликает по комментарию с заданным ID и проверяет, что отобразилась информация именно по этому комментарию
