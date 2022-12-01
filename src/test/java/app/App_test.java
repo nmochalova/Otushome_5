@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import pages.*;
 import java.util.Map;
 
@@ -22,6 +21,29 @@ public class App_test {
   private PostsPage postsPage = new PostsPage();
   private final int countUser = 10;
   private final int countPost = 100;
+  private final int postsPixels = 120;   //кол-во пикселов, на которые двигаем scroll по оси y
+  private final int deltasPix = 50;     //кол-во пикселов, на которое делаем подскроливание, если перелистали нужный пост
+  private final int millsPause = 300;   //пауза в миллисекундах в цепочке actions для scroll
+
+  //Тест, который проверяет, что постов ровно 100 шт
+  @Test
+  public void check100PostsTest(){
+    mainPage.open();
+    postPage.clickToPostsPage();
+
+    int counter=0;          //счетчик постов на странице
+    boolean isFlag = true;  //признак того, достигли ли конец экрана при скролле
+
+    while (isFlag) { //листаем посты, пока не достигнем конец экрана
+      try {
+        counter++;
+        postPage.scrollUntilFoundPost(counter, postsPixels, deltasPix, millsPause);
+      } catch (RuntimeException e) {
+        isFlag = false;
+      }
+    }
+    assertEquals(countPost,counter-1);
+  }
 
   //Тест, который кликает по пользователю с заданным ID ( <= 10) и проверяет, что отобразилась информация именно по этому пользователю
   @Test
@@ -55,29 +77,6 @@ public class App_test {
     AssertUser.asserDataUser(result, user);
   }
 
-  //Тест, который проверяет, что постов ровно 100 шт
-  @Test
-  public void scrollTest(){
-    mainPage.open();
-    postPage.clickToPostsPage();
-
-    int postsPixels = 120;   //кол-во пикселов, на которые двигаем scroll по оси y
-    int deltasPix = 50;     //кол-во пикселов, на которое делаем подскроливание, если перелистали нужный пост
-    int millsPause = 300;   //пауза в миллисекундах в цепочке actions для scroll
-    int counter=0;          //счетчик постов на странице
-    boolean isFlag = true;  //признак того, достигли ли конец экрана при скролле
-
-    while (isFlag) { //листаем посты, пока не достигнем конец экрана
-      try {
-        counter++;
-        postPage.scrollUntilFoundPost(counter, postsPixels, deltasPix, millsPause);
-      } catch (RuntimeException e) {
-        isFlag = false;
-      }
-    }
-    assertEquals(countPost,counter-1);
-  }
-
   //Тест, который кликает по комментарию с заданным ID и проверяет, что отобразилась информация именно по этому комментарию
   @Test
   public void checkPostByIdTest() {
@@ -85,15 +84,21 @@ public class App_test {
      postPage.clickToPostsPage();
 
      String postid = System.getProperty("postid","1");
-     if (Integer.parseInt(postid) != 1)  postid = "1";
+     if ((Integer.parseInt(postid) > countUser) || (Integer.parseInt(postid) <= 0)) postid = "1";
 
      Map<String,String> post = postsPage.getPostInfoFromJson(postid);
      String title = post.get("title");
 
-     SelenideElement postElement = postPage.findPost(postid);
-     postPage.clickPost(postElement);
-     postPage.checkPost(title);
-
+     for (int i = 1; i <= countPost; i++) {
+      try { //ищем целевой пост на странице
+        SelenideElement postElement = postPage.findPost(postid);
+        postPage.clickPost(postElement);
+        postPage.checkPost(title);
+        break;
+      } catch (ElementNotFound e) { //если не нашли прокручиваем страницу
+        postPage.scrollUntilFoundPost(i,postsPixels,deltasPix,millsPause);
+      }
+     }
      //Проверяем, что все данные поста отобразились правильно
      String result = postPage.getPostInfo(postid);
      System.out.println(result);

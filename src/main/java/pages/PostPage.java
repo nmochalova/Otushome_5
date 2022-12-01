@@ -30,7 +30,7 @@ public class PostPage extends MainPage{
   }
 
   public String getPostInfo(String postid) {
-    String locatorUsername = String.format("[content-desc *= 'user id: %s']",postid);
+    String locatorUsername = String.format("[content-desc *= 'post id: %s']",postid);
     SelenideElement el_2 = $(locatorUsername).should(Condition.visible);
     return el_2.getAttribute("content-desc");
   }
