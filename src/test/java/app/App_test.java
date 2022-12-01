@@ -22,14 +22,14 @@ public class App_test {
   private PostsPage postsPage = new PostsPage();
   private final int countUser = 10;
   private final int countPost = 100;
-  private final int millsPause = 600;
-  private final int usersPixels = 80;
- // private final int postsPixels = 152;
 
   //Тест, который кликает по пользователю с заданным ID ( <= 10) и проверяет, что отобразилась информация именно по этому пользователю
   @Test
   public void checkUserByIdTest() {
     mainPage.open();
+
+    int millsPause = 600; //пауза в миллисекундах в цепочке actions для scroll
+    int usersPixels = 80; //кол-во пикселов, на которые двигаем scroll по оси y
 
     String userId = System.getProperty("userid","1");
     if ((Integer.parseInt(userId) > countUser) || (Integer.parseInt(userId) <= 0))  userId = "1";
@@ -60,23 +60,22 @@ public class App_test {
   public void scrollTest(){
     mainPage.open();
     postPage.clickToPostsPage();
-    int postsPixels = 120;
-    int deltasPix = 50;
-    int millsPause = 300;
-    int i=0;
-    boolean isFlag = true;
 
+    int postsPixels = 120;   //кол-во пикселов, на которые двигаем scroll по оси y
+    int deltasPix = 50;     //кол-во пикселов, на которое делаем подскроливание, если перелистали нужный пост
+    int millsPause = 300;   //пауза в миллисекундах в цепочке actions для scroll
+    int counter=0;          //счетчик постов на странице
+    boolean isFlag = true;  //признак того, достигли ли конец экрана при скролле
 
-    while (isFlag) {
+    while (isFlag) { //листаем посты, пока не достигнем конец экрана
       try {
-        i++;
-        postPage.scrollUntilFoundPost(i, postsPixels, deltasPix, millsPause);
+        counter++;
+        postPage.scrollUntilFoundPost(counter, postsPixels, deltasPix, millsPause);
       } catch (RuntimeException e) {
         isFlag = false;
       }
     }
-
-    assertEquals(countPost,i-1);
+    assertEquals(countPost,counter-1);
   }
 
   //Тест, который кликает по комментарию с заданным ID и проверяет, что отобразилась информация именно по этому комментарию
